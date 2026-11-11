@@ -490,8 +490,8 @@ header.top .judul span {
   padding: var(--kop-atas, 40mm) 18mm 20mm;
   overflow: hidden;
   box-shadow: 0 8px 28px rgba(15, 34, 56, 0.12);
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 12pt;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
   line-height: 1.5;
   color: #111;
   transform: scale(var(--s, 0.5));
@@ -535,12 +535,11 @@ header.top .judul span {
   margin-bottom: 36px;
 }
 .kertas .ttd {
-  text-align: center;
-  width: 260px;
-  margin-right: auto;
+  text-align: left;
 }
 .kertas .ttd .jabatan {
   min-height: 30px;
+  font-weight: bold;
 }
 .kertas .ttd .nama {
   margin-top: 56px;
@@ -662,8 +661,8 @@ header.top .judul span {
 }
 .kertas-bap .sr .cb {
   border-left: 0.5px solid #000;
-  text-align: center;
-  padding: 0.5mm 0;
+  text-align: left;
+  padding: 0.5mm 0 0.5mm 3mm;
 }
 .kertas-bap .bap-isi {
   margin-top: 3mm;
@@ -2154,7 +2153,7 @@ function perbaruiPreview() {
   isiAtauKosong('pNoPa', document.getElementById('noPa').value);
   isiAtauKosong('pTglPerpanjangan', fmtTgl(document.getElementById('tglPerpanjangan').value));
 
-  document.getElementById('pJabatan').textContent = document.getElementById('jabatanManager').value;
+  document.getElementById('pJabatan').innerHTML = bagiDua(document.getElementById('jabatanManager').value, /\s+(?=DAN\s)/i);
   document.getElementById('pNamaManager').textContent = document.getElementById('namaManager').value;
   perbaruiTombolKosong();
 }
@@ -2474,6 +2473,21 @@ function kalimatTelat(on, objek, hari, pct) {
   var ps = String(pct).trim() ? fmtPersen(parsePersen(pct)) + '%' : '&hellip;%';
   return 'Mengalami/<s>tidak mengalami</s> keterlambatan ' + objek + ' selama ' + hs + ' hari Kalender = ' + ps;
 }
+// membagi teks jadi 2 baris: di titik kata kunci (pola), atau di spasi terdekat dari tengah
+function bagiDua(teks, pola) {
+  var t = String(teks || '').trim();
+  if (!t) return '';
+  var m = pola.exec(t),
+    i = m && m.index > 0 ? m.index : -1;
+  if (i < 0 && t.length > 40) {
+    var tengah = Math.floor(t.length / 2),
+      kiri = t.lastIndexOf(' ', tengah),
+      kanan = t.indexOf(' ', tengah);
+    i = kiri < 0 ? kanan : kanan < 0 ? kiri : tengah - kiri <= kanan - tengah ? kiri : kanan;
+  }
+  if (i < 0) return escQ(t);
+  return escQ(t.slice(0, i).trim()) + '<br>' + escQ(t.slice(i).trim());
+}
 function isiBaps(sel, teks, ph) {
   document.querySelectorAll(sel).forEach(function (el) {
     if (teks) {
@@ -2554,6 +2568,8 @@ function perbaruiBaps() {
     'Total sanksi ' + fmtPersen(sanksi) + '% &rarr; persentase pembayaran ' + fmtPersen(bayar) + '%';
   isiBaps('#pbPlnNama, #pbTtdPlnNama', nilaiBaps('bapsPlnNama'));
   isiBaps('#pbPlnJabatan, #pbTtdPlnJabatan', nilaiBaps('bapsPlnJabatan'));
+  if (nilaiBaps('bapsPlnJabatan'))
+    document.getElementById('pbTtdPlnJabatan').innerHTML = bagiDua(nilaiBaps('bapsPlnJabatan'), /\s+(?=SBU\b)/i);
   isiBaps('#pbPlnAlamat', nilaiBaps('bapsPlnAlamat'));
   isiBaps('#pbPejNama, #pbTtdPejNama', nilaiBaps('bapsPejNama'));
   isiBaps('#pbPejJabatan, #pbTtdPejJabatan', nilaiBaps('bapsPejJabatan'));
