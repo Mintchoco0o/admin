@@ -503,6 +503,8 @@ header.top .judul span {
   flex-shrink: 0;
 }
 .kertas table.kop {
+  font-size: 8pt;
+  line-height: 1.15;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 18px;
@@ -542,7 +544,7 @@ header.top .judul span {
   font-weight: bold;
 }
 .kertas .ttd .nama {
-  margin-top: 56px;
+  margin-top: 236px;
   text-decoration: underline;
   font-weight: bold;
 }
@@ -643,6 +645,12 @@ header.top .judul span {
   vertical-align: middle;
   line-height: 1.25;
 }
+.kertas-bap .bap-tbl td.tgl {
+  font-size: 6.5pt;
+  padding-left: 0.6mm;
+  padding-right: 0.6mm;
+  white-space: nowrap;
+}
 .kertas-bap .bap-tbl td.g {
   padding: 0;
   text-align: left;
@@ -653,16 +661,22 @@ header.top .judul span {
   grid-template-columns: 77.8% 22.2%;
 }
 .kertas-bap .sr .t {
-  padding: 0.5mm 1.5mm 0.5mm 3mm;
+  padding: 0.3mm 1.5mm 0.3mm 3mm;
+  font-size: 8.5pt;
+}
+.kertas-bap .sr .t.it {
+  display: flex;
+  padding-left: 9mm;
 }
 .kertas-bap .sr .l {
   display: inline-block;
-  width: 5mm;
+  flex: none;
+  width: 6mm;
 }
 .kertas-bap .sr .cb {
   border-left: 0.5px solid #000;
   text-align: left;
-  padding: 0.5mm 0 0.5mm 3mm;
+  padding: 0.3mm 0 0.3mm 3mm;
 }
 .kertas-bap .bap-isi {
   margin-top: 3mm;
@@ -1195,6 +1209,76 @@ header.top .judul span {
     page-break-after: avoid;
   }
 }
+
+/* ===== LINK DRIVE ===== */
+.integ .desc {
+  color: #475467;
+  font-size: 13.5px;
+  margin: 0 0 6px;
+}
+.integ label {
+  display: block;
+  font-size: 13px;
+  color: #344054;
+  margin: 14px 0 6px;
+}
+.integ input[type='text'] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #c9d2de;
+  border-radius: 8px;
+  background: #fff;
+  color: #101828;
+  font-family: inherit;
+}
+.integ .baris-tombol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.integ .btn-biru {
+  background: #46164f;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.integ .btn-biru.abu {
+  background: #eef1f5;
+  color: #46164f;
+}
+.integ .status-drive {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #475467;
+}
+.integ .status-drive.ok {
+  color: #157347;
+}
+.integ .status-drive.err {
+  color: #b42318;
+}
+.integ details {
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: #475467;
+}
+.integ details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #1d3b8b;
+}
+.integ details ol {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
@@ -1222,6 +1306,9 @@ header.top .judul span {
     </button>
     <button class="nav-item" id="navHistory" onclick="bukaHalaman('history', this)">
       <span class="kiri-item">&#128337; History</span><span class="chev">&#8250;</span>
+    </button>
+    <button class="nav-item" id="navDrive" onclick="bukaHalaman('drive', this)">
+      <span class="kiri-item">&#128279; Link Drive</span><span class="chev">&#8250;</span>
     </button>
   </aside>
 
@@ -1292,7 +1379,7 @@ header.top .judul span {
       <span>Preview SPPW</span>
       <div class="sppw-aksi">
         <button class="btn-baps" id="btnKosongSppw" onclick="kosongkan()" disabled>&#128465;&#65039; Kosongkan</button>
-        <button class="btn-baps" id="btnSaveSppw" onclick="simpanPdf('sppw', this)" disabled>&#128190; Save</button>
+        <button class="btn-baps" id="btnSaveSppw" onclick="simpanWord('sppw', this)" disabled>&#128190; Save Word</button>
         <button class="btn-baps" onclick="cetak('sppw')">&#128424;&#65039; Print</button>
       </div>
     </div>
@@ -1434,7 +1521,7 @@ header.top .judul span {
       <span>Preview BAPS</span>
       <div class="sppw-aksi">
         <button class="btn-baps" id="btnKosongBaps" onclick="kosongkanBaps()" disabled>&#128465;&#65039; Kosongkan</button>
-        <button class="btn-baps" id="btnSaveBaps" onclick="simpanPdf('baps', this)" disabled>&#128190; Save</button>
+        <button class="btn-baps" id="btnSaveBaps" onclick="simpanWord('baps', this)" disabled>&#128190; Save Word</button>
         <button class="btn-baps" onclick="cetak('baps')">&#128424;&#65039; Print</button>
       </div>
     </div>
@@ -1454,8 +1541,8 @@ header.top .judul span {
         <table class="bap-tbl">
           <colgroup><col style="width:17%"><col style="width:8%"><col style="width:11%"><col style="width:9%"><col style="width:10%"><col style="width:35%"><col style="width:10%"></colgroup>
           <tr><th>Pekerjaan</th><th>Target</th><th>Perpanjangan Waktu</th><th>Realisasi</th><th>Persentase Pembayaran</th><th>Syarat Penyerahan Pekerjaan</th><th>Cek List Lampiran</th></tr>
-          <tr><td class="c">Penyelesaian Realisasi Pekerjaan (Testcom)</td><td class="c" id="pbTgl1">-</td><td class="c" id="pbTglPerp">-</td><td class="c" id="pbTgl2">-</td><td class="c" rowspan="2" id="pbBayar">100%</td><td class="g" colspan="2"><div class="sg"><div class="sr"><span class="t"><b>OSP</b></span><span class="cb"></span></div><div class="sr"><span class="t"><span class="l">a.</span>Bill Of Material (BOM)</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">b.</span>Management Route</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">c.</span>File GIS Map (.gdb)</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">d.</span>Core Management</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">e.</span>Site Plan dan Building Layout</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">f.</span>Dokumentasi Foto OSP</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">g.</span>Hasil OTDR</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">h.</span>BAST Kabel</span><span class="cb">&#9633;</span></div></div></td></tr>
-          <tr><td class="c">Dokumentasi Pekerjaan Instalasi FOT &amp; FOC</td><td class="c" id="pbTgl3">-</td><td class="c">-</td><td class="c" id="pbTgl4">-</td><td class="g" colspan="2"><div class="sg"><div class="sr"><span class="t"><b>ISP</b></span><span class="cb"></span></div><div class="sr"><span class="t"><span class="l">a.</span>AS BUILT</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">b.</span>Bill Of Material (BOM)</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">c.</span>Site Layout PoP dan User</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">d.</span>Room Layout PoP dan User</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">e.</span>Patching kabel ISP</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">f.</span>Foto Dok. Instalasi PoP</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">g.</span>Foto Dok. Instalasi User</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">h.</span>Form hasil Testcom dan BAI</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t"><span class="l">i.</span>Form Pengambilan dan Pengembalian Perangkat FOT</span><span class="cb">&#9633;</span></div></div></td></tr>
+          <tr><td class="c">Penyelesaian Realisasi Pekerjaan (Testcom)</td><td class="c tgl" id="pbTgl1">-</td><td class="c tgl" id="pbTglPerp">-</td><td class="c tgl" id="pbTgl2">-</td><td class="c" rowspan="2" id="pbBayar">100%</td><td class="g" colspan="2"><div class="sg"><div class="sr"><span class="t"><b>OSP</b></span><span class="cb"></span></div><div class="sr"><span class="t it"><span class="l">a.</span>Bill Of Material (BOM)</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">b.</span>Management Route</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">c.</span>File GIS Map (.gdb)</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">d.</span>Core Management</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">e.</span>Site Plan dan Building Layout</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">f.</span>Dokumentasi Foto OSP</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">g.</span>Hasil OTDR</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">h.</span>BAST Kabel</span><span class="cb">&#9633;</span></div></div></td></tr>
+          <tr><td class="c">Dokumentasi Pekerjaan Instalasi FOT &amp; FOC</td><td class="c tgl" id="pbTgl3">-</td><td class="c">-</td><td class="c tgl" id="pbTgl4">-</td><td class="g" colspan="2"><div class="sg"><div class="sr"><span class="t"><b>ISP</b></span><span class="cb"></span></div><div class="sr"><span class="t it"><span class="l">a.</span>AS BUILT</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">b.</span>Bill Of Material (BOM)</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">c.</span>Site Layout PoP dan User</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">d.</span>Room Layout PoP dan User</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">e.</span>Patching kabel ISP</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">f.</span>Foto Dok. Instalasi PoP</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">g.</span>Foto Dok. Instalasi User</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">h.</span>Form hasil Testcom dan BAI</span><span class="cb">&#9633;</span></div><div class="sr"><span class="t it"><span class="l">i.</span>Form Pengambilan dan Pengembalian Perangkat FOT</span><span class="cb">&#9633;</span></div></div></td></tr>
         </table>
         <div class="bap-isi">
           <p>Pada hari <b id="pbHari" class="kosong">&hellip;</b> tanggal <b id="pbTglBaps" class="kosong">&hellip;</b> bulan <b id="pbBulanBaps" class="kosong">&hellip;</b> tahun <b id="pbTahunBaps" class="kosong">&hellip;</b> (<span id="pbTglAngka" class="kosong">&hellip;/&hellip;/&hellip;</span>), kami yang bertanda tangan dibawah ini:</p>
@@ -1515,7 +1602,7 @@ header.top .judul span {
       <span>Preview Form QC &middot; 5 halaman</span>
       <div class="sppw-aksi">
         <button class="btn-baps" id="btnKosongQc" onclick="kosongkanQc()" disabled>&#128465;&#65039; Kosongkan</button>
-        <button class="btn-baps" id="btnSaveQc" onclick="simpanPdf('qc', this)" disabled>&#128190; Save</button>
+        <button class="btn-baps" id="btnSaveQc" onclick="simpanWord('qc', this)" disabled>&#128190; Save Word</button>
         <button class="btn-baps" onclick="cetak('qc')">&#128424;&#65039; Print</button>
       </div>
     </div>
@@ -1530,6 +1617,25 @@ header.top .judul span {
 </div>
       </section>
 
+      <section id="drive" class="halaman-utama">
+<div class="hist-wrap">
+  <div class="seksi integ">
+    <h3>Link Google Drive</h3>
+    <p class="desc">Dua link untuk menyimpan riwayat dan file Word ke Google Drive, supaya bisa dibuka dari perangkat lain.</p>
+    <label for="driveFolder">Link Folder Google Drive</label>
+    <input type="text" id="driveFolder" autocomplete="off">
+    <label for="driveScript">URL Apps Script (Web App)</label>
+    <input type="text" id="driveScript" autocomplete="off" placeholder="https://script.google.com/macros/s/.../exec">
+    <div class="baris-tombol">
+      <button type="button" class="btn-biru" id="driveSimpan">Simpan</button>
+      <button type="button" class="btn-biru abu" id="driveBuka">Buka Folder</button>
+      <button type="button" class="btn-biru abu" id="driveSinkron">Sinkron Sekarang</button>
+    </div>
+    <div class="status-drive" id="driveStatus"></div>
+  </div>
+</div>
+      </section>
+
       <section id="history" class="halaman-utama">
 <div class="hist-wrap">
   <div class="seksi">
@@ -1537,7 +1643,7 @@ header.top .judul span {
       <h3>Riwayat Dokumen</h3>
       <button class="btn-baps" id="histHapusSemua" type="button">&#128465;&#65039; Hapus semua</button>
     </div>
-    <p class="qc-hint">History disimpan selamanya di browser ini, tanpa batas jumlah. Hilang hanya kalau data browser dihapus.</p>
+    <p class="qc-hint">History disimpan di browser ini dan, kalau URL Apps Script sudah diisi, juga di folder Google Drive di atas supaya bisa dibuka dari perangkat lain.</p>
     <div class="hist-chips" id="histChips"></div>
     <div id="histList"></div>
   </div>
@@ -1977,7 +2083,8 @@ var JUDUL_HALAMAN = {
   sppw: '(SPPW) Surat Permohonan Perpanjangan Waktu',
   baps: 'BAPS (Berita Acara Pekerjaan Selesai)',
   qc: 'Form QC Instalasi FOC dan FOT',
-  history: 'History Dokumen'
+  history: 'History Dokumen',
+  drive: 'Link Google Drive'
 };
 function bukaHalaman(id, tombol) {
   document.querySelectorAll('.halaman-utama').forEach(function (el) {
@@ -2502,6 +2609,9 @@ function isiBaps(sel, teks, ph) {
 function nilaiBaps(id) {
   return document.getElementById(id).value.trim();
 }
+function fmtTglBapsAman(v) {
+  return v ? fmtTglBaps(v) : '';
+}
 function fmtTglPendek(v) {
   if (!v) return '';
   var p = v.split('-');
@@ -2510,7 +2620,7 @@ function fmtTglPendek(v) {
 function perbaruiBaps() {
   [1, 2, 3, 4].forEach(function (n) {
     document.getElementById('pbTgl' + n).textContent =
-      fmtTglPendek(document.getElementById('bapsTgl' + n).value) || '-';
+      fmtTglBapsAman(document.getElementById('bapsTgl' + n).value) || '-';
   });
   isiBaps('#pbPekerjaan', nilaiBaps('bapsPekerjaan'));
   isiBaps('#pbPoSap', nilaiBaps('bapsPoSap'));
@@ -2523,7 +2633,7 @@ function perbaruiBaps() {
   document.getElementById('pbRowAmd1').hidden = adaPel && !nilaiBaps('bapsAmd1');
   document.getElementById('pbRowAmd2').hidden = adaPel && !nilaiBaps('bapsAmd2');
   isiBaps('.pb-pelaksana', nilaiBaps('bapsPelaksana'));
-  document.getElementById('pbTglPerp').textContent = fmtTglPendek(document.getElementById('bapsTglPerp').value) || '-';
+  document.getElementById('pbTglPerp').textContent = fmtTglBapsAman(document.getElementById('bapsTglPerp').value) || '-';
   // tanggal BAPS (hari ini / tanggal dibuat)
   var tb = nilaiBaps('bapsTglBaps'),
     tp = tb ? tb.split('-') : null;
@@ -2538,7 +2648,7 @@ function perbaruiBaps() {
   isiBaps('#pbTglSelesai', t2 ? fmtTglBaps(t2) : '', '\u2026');
   // no BAPS di judul
   var nb = nilaiBaps('bapsNoBaps');
-  document.getElementById('pbNoBaps').textContent = nb ? (nb.charAt(0) === '(' ? nb : '(' + nb + ')') : '(NO BAPS)';
+  document.getElementById('pbNoBaps').textContent = nb ? nb.replace(/^\(\s*|\s*\)$/g, '') : 'NO BAPS';
   // keterlambatan, sanksi, dan persentase pembayaran
   var tk = document.getElementById('bapsTelatKerja').checked,
     td = document.getElementById('bapsTelatDok').checked;
@@ -3155,11 +3265,714 @@ function namaFilePdf(awal, nilai) {
     .trim();
   return awal + (v ? ' ' + v : '');
 }
-function simpanPdf(bagian, tombol) {
-  if (!window.html2canvas || !window.jspdf) {
-    infoPesan('Library PDF belum termuat. Coba muat ulang halaman.');
-    return;
+// ===== SAVE KE WORD (.docx) =====
+// File .docx dibuat langsung di browser (tanpa library): ZIP tanpa kompresi + XML WordprocessingML.
+// Isinya diambil dari preview di layar, jadi hasil Word = apa yang terlihat di preview.
+var DOCX = (function () {
+  var TE = new TextEncoder();
+  var CRC = (function () {
+    var t = [],
+      c,
+      n,
+      k;
+    for (n = 0; n < 256; n++) {
+      c = n;
+      for (k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+      t[n] = c >>> 0;
+    }
+    return t;
+  })();
+  function crc32(b) {
+    var c = 0xffffffff;
+    for (var i = 0; i < b.length; i++) c = CRC[(c ^ b[i]) & 255] ^ (c >>> 8);
+    return (c ^ 0xffffffff) >>> 0;
   }
+  function zip(files) {
+    var parts = [],
+      central = [],
+      offset = 0,
+      d = new Date();
+    var dt = (d.getHours() << 11) | (d.getMinutes() << 5) | (d.getSeconds() >> 1);
+    var dd = ((d.getFullYear() - 1980) << 9) | ((d.getMonth() + 1) << 5) | d.getDate();
+    files.forEach(function (f) {
+      var name = TE.encode(f.name),
+        data = f.data,
+        crc = crc32(data);
+      var h = new DataView(new ArrayBuffer(30));
+      h.setUint32(0, 0x04034b50, true);
+      h.setUint16(4, 20, true);
+      h.setUint16(6, 0x0800, true);
+      h.setUint16(10, dt, true);
+      h.setUint16(12, dd, true);
+      h.setUint32(14, crc, true);
+      h.setUint32(18, data.length, true);
+      h.setUint32(22, data.length, true);
+      h.setUint16(26, name.length, true);
+      parts.push(new Uint8Array(h.buffer), name, data);
+      var c = new DataView(new ArrayBuffer(46));
+      c.setUint32(0, 0x02014b50, true);
+      c.setUint16(4, 20, true);
+      c.setUint16(6, 20, true);
+      c.setUint16(8, 0x0800, true);
+      c.setUint16(12, dt, true);
+      c.setUint16(14, dd, true);
+      c.setUint32(16, crc, true);
+      c.setUint32(20, data.length, true);
+      c.setUint32(24, data.length, true);
+      c.setUint16(28, name.length, true);
+      c.setUint32(42, offset, true);
+      central.push(new Uint8Array(c.buffer), name);
+      offset += 30 + name.length + data.length;
+    });
+    var csize = 0;
+    central.forEach(function (x) {
+      csize += x.length;
+    });
+    var e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true);
+    e.setUint16(8, files.length, true);
+    e.setUint16(10, files.length, true);
+    e.setUint32(12, csize, true);
+    e.setUint32(16, offset, true);
+    return new Blob(parts.concat(central, [new Uint8Array(e.buffer)]), {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    });
+  }
+  function dataUri(src) {
+    var m = /^data:([^;]+);base64,([\s\S]*)$/.exec(src || '');
+    if (!m) return null;
+    var bin = atob(m[2]),
+      u = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+    return { mime: m[1], data: u };
+  }
+
+  // ---------- XML ----------
+  function esc(t) {
+    return String(t)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
+  }
+  function rpr(o) {
+    var x = '';
+    if (o.font) x += '<w:rFonts w:ascii="' + o.font + '" w:hAnsi="' + o.font + '" w:cs="' + o.font + '"/>';
+    if (o.b) x += '<w:b/><w:bCs/>';
+    if (o.i) x += '<w:i/><w:iCs/>';
+    if (o.s) x += '<w:strike/>';
+    if (o.color) x += '<w:color w:val="' + o.color + '"/>';
+    if (o.sz) x += '<w:sz w:val="' + Math.round(o.sz * 2) + '"/><w:szCs w:val="' + Math.round(o.sz * 2) + '"/>';
+    if (o.u) x += '<w:u w:val="single"/>';
+    if (o.sup) x += '<w:vertAlign w:val="superscript"/>';
+    return x ? '<w:rPr>' + x + '</w:rPr>' : '';
+  }
+  function run(t, o) {
+    return '<w:r>' + rpr(o) + '<w:t xml:space="preserve">' + esc(t) + '</w:t></w:r>';
+  }
+  function br(o) {
+    return '<w:r>' + rpr(o) + '<w:br/></w:r>';
+  }
+  function collect(node, o, out) {
+    node.childNodes.forEach(function (n) {
+      if (n.nodeType === 3) {
+        var t = n.nodeValue.replace(/[ \t\r\n]+/g, ' ');
+        if (t) out.push({ t: t, o: o });
+        return;
+      }
+      if (n.nodeType !== 1 || n.hidden) return;
+      var p = Object.assign({}, o),
+        tg = n.tagName;
+      if (tg === 'BR') {
+        out.push({ br: 1, o: o });
+        return;
+      }
+      if (tg === 'B' || tg === 'STRONG') p.b = true;
+      if (tg === 'I' || tg === 'EM') p.i = true;
+      if (tg === 'S' || tg === 'STRIKE' || tg === 'DEL') p.s = true;
+      if (tg === 'U') p.u = true;
+      if (tg === 'SUP') p.sup = true;
+      if (n.classList.contains('kosong')) p.color = 'B7BDC7';
+      collect(n, p, out);
+    });
+  }
+  // isi sebuah elemen -> deretan <w:r> (spasi HTML dirapikan seperti di browser)
+  function runs(node, o) {
+    var p = Object.assign({}, o),
+      out = [];
+    if (node.classList && node.classList.contains('kosong')) p.color = 'B7BDC7';
+    collect(node, p, out);
+    out.forEach(function (s, i) {
+      if (s.t === undefined) return;
+      if (i === 0 || out[i - 1].br) s.t = s.t.replace(/^ +/, '');
+      if (i === out.length - 1 || out[i + 1].br) s.t = s.t.replace(/ +$/, '');
+    });
+    return out
+      .map(function (s) {
+        return s.br ? br(s.o) : s.t ? run(s.t, s.o) : '';
+      })
+      .join('');
+  }
+  // o: jc, before, after, line (twips, minimal), left, hanging, right, keepNext, pbb, frame, tabs
+  function para(content, o) {
+    o = o || {};
+    var x = '';
+    if (o.keepNext) x += '<w:keepNext/>';
+    if (o.pbb) x += '<w:pageBreakBefore/>';
+    if (o.frame) x += o.frame;
+    if (o.tabs) x += '<w:tabs>' + o.tabs + '</w:tabs>';
+    x +=
+      '<w:spacing w:before="' +
+      (o.before || 0) +
+      '" w:after="' +
+      (o.after || 0) +
+      '"' +
+      (o.line ? ' w:line="' + o.line + '" w:lineRule="' + (o.exact ? 'exact' : 'atLeast') + '"' : '') +
+      '/>';
+    if (o.left || o.hanging || o.right)
+      x +=
+        '<w:ind w:left="' +
+        (o.left || 0) +
+        '" w:right="' +
+        (o.right || 0) +
+        '"' +
+        (o.hanging ? ' w:hanging="' + o.hanging + '"' : '') +
+        '/>';
+    if (o.jc) x += '<w:jc w:val="' + o.jc + '"/>';
+    return '<w:p><w:pPr>' + x + '</w:pPr>' + (content || '') + '</w:p>';
+  }
+  // paragraf kosong setinggi h twips (jarak antar blok)
+  function spacer(h) {
+    return para('', { line: h, exact: true });
+  }
+  function tc(inner, o) {
+    o = o || {};
+    var x = '<w:tcW w:w="' + o.w + '" w:type="dxa"/>';
+    if (o.span > 1) x += '<w:gridSpan w:val="' + o.span + '"/>';
+    if (o.vm) x += o.vm === 'restart' ? '<w:vMerge w:val="restart"/>' : '<w:vMerge/>';
+    var b = o.b || {};
+    x +=
+      '<w:tcBorders>' +
+      ['top', 'left', 'bottom', 'right']
+        .map(function (s) {
+          return (
+            '<w:' + s + (b[s] ? ' w:val="single" w:sz="4" w:space="0" w:color="000000"' : ' w:val="nil"') + '/>'
+          );
+        })
+        .join('') +
+      '</w:tcBorders>';
+    var m = o.m || [0, 0, 0, 0];
+    x +=
+      '<w:tcMar><w:top w:w="' +
+      m[0] +
+      '" w:type="dxa"/><w:left w:w="' +
+      m[1] +
+      '" w:type="dxa"/><w:bottom w:w="' +
+      m[2] +
+      '" w:type="dxa"/><w:right w:w="' +
+      m[3] +
+      '" w:type="dxa"/></w:tcMar>';
+    if (o.va) x += '<w:vAlign w:val="' + o.va + '"/>';
+    return '<w:tc><w:tcPr>' + x + '</w:tcPr>' + (inner || '<w:p/>') + '</w:tc>';
+  }
+  function tr(cells) {
+    return '<w:tr><w:trPr><w:cantSplit/></w:trPr>' + cells + '</w:tr>';
+  }
+  function tbl(rows, widths) {
+    var tot = widths.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return (
+      '<w:tbl><w:tblPr><w:tblW w:w="' +
+      tot +
+      '" w:type="dxa"/><w:tblInd w:w="0" w:type="dxa"/><w:tblLayout w:type="fixed"/>' +
+      '<w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar></w:tblPr>' +
+      '<w:tblGrid>' +
+      widths
+        .map(function (w) {
+          return '<w:gridCol w:w="' + w + '"/>';
+        })
+        .join('') +
+      '</w:tblGrid>' +
+      rows +
+      '</w:tbl>'
+    );
+  }
+  // tabel HTML tanpa garis (kop surat, identitas, tanda tangan) -> tabel Word
+  function tabelDom(t, widths, o) {
+    var rows = '';
+    t.querySelectorAll('tr').forEach(function (r) {
+      if (r.hidden) return;
+      var cells = '',
+        ci = 0;
+      [].forEach.call(r.children, function (td) {
+        var sp = td.colSpan || 1,
+          w = 0;
+        for (var k = 0; k < sp; k++) w += widths[ci + k] || 0;
+        var jc = o.jc ? o.jc[ci] : '';
+        ci += sp;
+        cells += tc(para(runs(td, o.run), { line: o.line, jc: jc }), { w: w, span: sp, m: o.m });
+      });
+      rows += tr(cells);
+    });
+    return tbl(rows, widths);
+  }
+  function ptDari(el) {
+    return parseFloat(getComputedStyle(el).fontSize) * 0.75;
+  }
+  function famili(css) {
+    var f = String(css || '')
+      .split(',')[0]
+      .replace(/["']/g, '')
+      .trim();
+    return !f || /carlito/i.test(f) ? 'Calibri' : f;
+  }
+
+  // ---------- gambar ----------
+  var NS_A = 'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"';
+  var NS_PIC = 'xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"';
+  function grafik(rid, id, cx, cy) {
+    return (
+      '<a:graphic ' +
+      NS_A +
+      '><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture"><pic:pic ' +
+      NS_PIC +
+      '><pic:nvPicPr><pic:cNvPr id="' +
+      id +
+      '" name="Gambar ' +
+      id +
+      '"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed="' +
+      rid +
+      '"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="' +
+      cx +
+      '" cy="' +
+      cy +
+      '"/></a:xfrm><a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic>'
+    );
+  }
+  function gambarInline(rid, id, cx, cy) {
+    return (
+      '<w:r><w:drawing><wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="' +
+      cx +
+      '" cy="' +
+      cy +
+      '"/><wp:docPr id="' +
+      id +
+      '" name="Gambar ' +
+      id +
+      '"/><wp:cNvGraphicFramePr/>' +
+      grafik(rid, id, cx, cy) +
+      '</wp:inline></w:drawing></w:r>'
+    );
+  }
+  // gambar latar satu halaman penuh, di belakang teks
+  function gambarLatar(rid, id, cx, cy) {
+    return (
+      '<w:r><w:drawing><wp:anchor distT="0" distB="0" distL="0" distR="0" simplePos="0" relativeHeight="' +
+      id +
+      '" behindDoc="1" locked="0" layoutInCell="1" allowOverlap="1"><wp:simplePos x="0" y="0"/>' +
+      '<wp:positionH relativeFrom="page"><wp:posOffset>0</wp:posOffset></wp:positionH>' +
+      '<wp:positionV relativeFrom="page"><wp:posOffset>0</wp:posOffset></wp:positionV>' +
+      '<wp:extent cx="' +
+      cx +
+      '" cy="' +
+      cy +
+      '"/><wp:effectExtent l="0" t="0" r="0" b="0"/><wp:wrapNone/><wp:docPr id="' +
+      id +
+      '" name="Latar ' +
+      id +
+      '"/><wp:cNvGraphicFramePr/>' +
+      grafik(rid, id, cx, cy) +
+      '</wp:anchor></w:drawing></w:r>'
+    );
+  }
+
+  // ---------- paket .docx ----------
+  // o: body, imgs [{name, data, mime}], footer (xml isi footer, opsional), pg {top,right,bottom,left,footer}, font, sz
+  function paket(o) {
+    var NS =
+      'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" ' +
+      NS_A +
+      ' ' +
+      NS_PIC;
+    var H = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
+    var pg = o.pg;
+    var sect =
+      '<w:sectPr>' +
+      (o.footer ? '<w:footerReference w:type="default" r:id="rIdFooter"/>' : '') +
+      '<w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="' +
+      pg.top +
+      '" w:right="' +
+      pg.right +
+      '" w:bottom="' +
+      pg.bottom +
+      '" w:left="' +
+      pg.left +
+      '" w:header="0" w:footer="' +
+      (pg.footer || 0) +
+      '" w:gutter="0"/></w:sectPr>';
+    var rels =
+      '<Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>';
+    if (o.footer)
+      rels +=
+        '<Relationship Id="rIdFooter" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/>';
+    var exts = {},
+      files = [];
+    (o.imgs || []).forEach(function (im) {
+      rels +=
+        '<Relationship Id="' +
+        im.rid +
+        '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="' +
+        im.name +
+        '"/>';
+      exts[im.name.split('.').pop()] = im.mime;
+      files.push({ name: 'word/' + im.name, data: im.data });
+    });
+    var ct =
+      H +
+      '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' +
+      Object.keys(exts)
+        .map(function (e) {
+          return '<Default Extension="' + e + '" ContentType="' + exts[e] + '"/>';
+        })
+        .join('') +
+      '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>' +
+      (o.footer
+        ? '<Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/>'
+        : '') +
+      '</Types>';
+    var styles =
+      H +
+      '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="' +
+      o.font +
+      '" w:hAnsi="' +
+      o.font +
+      '" w:cs="' +
+      o.font +
+      '"/><w:sz w:val="' +
+      o.sz * 2 +
+      '"/><w:szCs w:val="' +
+      o.sz * 2 +
+      '"/><w:lang w:val="id-ID"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="240" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>' +
+      '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>' +
+      '<w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:uiPriority w:val="99"/><w:semiHidden/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>';
+    files.unshift(
+      { name: '[Content_Types].xml', data: TE.encode(ct) },
+      {
+        name: '_rels/.rels',
+        data: TE.encode(
+          H +
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'
+        )
+      },
+      { name: 'word/document.xml', data: TE.encode(H + '<w:document ' + NS + '><w:body>' + o.body + sect + '</w:body></w:document>') },
+      { name: 'word/styles.xml', data: TE.encode(styles) },
+      {
+        name: 'word/_rels/document.xml.rels',
+        data: TE.encode(
+          H + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + rels + '</Relationships>'
+        )
+      }
+    );
+    if (o.footer)
+      files.push({
+        name: 'word/footer1.xml',
+        data: TE.encode(H + '<w:ftr ' + NS + '>' + o.footer + '</w:ftr>')
+      });
+    return zip(files);
+  }
+
+  var MM = 56.6929; // twips per mm
+  var EMU_MM = 36000;
+
+  // ---------- SPPW ----------
+  function sppw() {
+    var K = document.querySelector('#sppw .kertas'),
+      cs = getComputedStyle(K),
+      pt = ptDari(K),
+      o = { font: 'Arial', sz: pt },
+      LINE = Math.round(pt * 1.5 * 20),
+      q = function (s) {
+        return K.querySelector(s);
+      };
+    var pad = function (p) {
+      return Math.round(parseFloat(cs[p]) * 15);
+    };
+    var W = 11906 - pad('paddingLeft') - pad('paddingRight');
+    var body = '';
+    var kop = q('table.kop');
+    body += tabelDom(kop, [1275, 180, W - 1455], { run: { font: 'Arial', sz: ptDari(kop) }, line: Math.round(ptDari(kop) * 1.15 * 20), m: [15, 0, 15, 0] });
+    body += para(runs(q('.tgl-kota'), o), { before: 270, after: 270, line: LINE });
+    body += para(runs(q('.kepada'), o), { after: 210, line: LINE });
+    body += para(runs(q('.salam'), o), { after: 150, line: LINE });
+    body += para(runs(q('p.isi'), o), { after: 210, line: LINE, jc: 'both' });
+    body += para(runs(q('.penutup'), o), { after: 540, line: LINE });
+    body += para(runs(q('.ttd .jabatan'), Object.assign({ b: true }, o)), { line: LINE });
+    body += para(runs(q('.ttd .nama'), Object.assign({ b: true, u: true }, o)), { before: 840 + 9 * LINE, line: LINE });
+    return paket({
+      body: body,
+      font: 'Arial',
+      sz: 10,
+      pg: { top: pad('paddingTop'), right: pad('paddingRight'), bottom: pad('paddingBottom'), left: pad('paddingLeft') }
+    });
+  }
+
+  // ---------- BAPS ----------
+  function baps() {
+    var K = document.querySelector('#baps .kertas-bap'),
+      cs = getComputedStyle(K),
+      pt = ptDari(K),
+      F = famili(cs.fontFamily),
+      o = { font: F, sz: pt },
+      LH = 1.28,
+      q = function (s) {
+        return K.querySelector(s);
+      };
+    var pad = function (p) {
+      return Math.round(parseFloat(cs[p]) * 15);
+    };
+    var L = pad('paddingLeft'),
+      W = 11906 - L - pad('paddingRight');
+    var line = Math.round(pt * LH * 20);
+    var body = '';
+    // logo + judul
+    var img = q('.bap-logo img'),
+      imgs = [],
+      d = img && dataUri(img.getAttribute('src'));
+    if (d) {
+      var cy = 12 * EMU_MM,
+        cx = Math.round((cy * img.naturalWidth) / (img.naturalHeight || 1));
+      imgs.push({ rid: 'rIdLogo', name: 'media/logo.png', data: d.data, mime: d.mime });
+      body += para(gambarInline('rIdLogo', 1, cx, cy), { jc: 'center', after: 40 });
+    }
+    var judul = q('.bap-judul');
+    body += para(runs(judul, { font: F, sz: ptDari(judul), b: true }), {
+      jc: 'center',
+      before: 113,
+      after: 170,
+      line: Math.round(ptDari(judul) * 1.3 * 20)
+    });
+    // kop pekerjaan
+    body += tabelDom(q('.bap-kop'), [1701, 227, W - 1701 - 227 - 2835, 2835], { run: o, line: line, m: [23, 0, 23, 0] });
+    body += spacer(170);
+    // tabel utama
+    var tb = q('.bap-tbl'),
+      tpt = ptDari(tb),
+      to = { font: F, sz: tpt },
+      tline = Math.round(tpt * 1.25 * 20);
+    var PC = [17, 8, 11, 9, 10, 35, 10],
+      TW = PC.map(function (p) {
+        return Math.round((W * p) / 100);
+      });
+    TW[6] = W - TW.slice(0, 6).reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    var M = [57, 68, 57, 68],
+      all = { top: 1, left: 1, bottom: 1, right: 1 };
+    var rows = '';
+    var heads = tb.querySelectorAll('th');
+    rows += tr(
+      [].map
+        .call(heads, function (th, i) {
+          return tc(para(runs(th, to), { jc: 'center', line: tline }), { w: TW[i], b: all, va: 'center', m: M });
+        })
+        .join('')
+    );
+    var trs = tb.querySelectorAll('tr'),
+      g = function (id) {
+        var e = document.getElementById(id);
+        return e ? e.textContent : '-';
+      };
+    var mini = para('', { line: 20, exact: true });
+    var secs = [
+      { tr: trs[1], t: [trs[1].children[0].textContent, g('pbTgl1'), g('pbTglPerp'), g('pbTgl2')] },
+      { tr: trs[2], t: [trs[2].children[0].textContent, g('pbTgl3'), '-', g('pbTgl4')] }
+    ];
+    secs.forEach(function (s, si) {
+      var items = s.tr.querySelectorAll('.sr');
+      [].forEach.call(items, function (it, k) {
+        var first = k === 0,
+          last = k === items.length - 1,
+          cells = '';
+        for (var c = 0; c < 4; c++)
+          cells += tc(first ? para(run(s.t[c].trim(), c > 0 ? { font: F, sz: 6.5 } : to), { jc: 'center', line: tline }) : mini, {
+            w: TW[c],
+            vm: first ? 'restart' : 'cont',
+            b: all,
+            va: 'center',
+            m: first ? (c > 0 ? [57, 34, 57, 34] : M) : [0, 0, 0, 0]
+          });
+        cells += tc(si === 0 && first ? para(run(g('pbBayar'), to), { jc: 'center', line: tline }) : mini, {
+          w: TW[4],
+          vm: si === 0 && first ? 'restart' : 'cont',
+          b: all,
+          va: 'center',
+          m: si === 0 && first ? M : [0, 0, 0, 0]
+        });
+        // kolom Syarat & Cek List: tanpa garis mendatar di antara baris
+        var t = it.querySelector('.t'),
+          cb = it.querySelector('.cb'),
+          sp = ptDari(t),
+          so = { font: F, sz: sp },
+          sl = Math.round(sp * 1.25 * 20),
+          lbl = t.querySelector('.l'),
+          bd = { left: 1, right: 1, top: first, bottom: last };
+        var isi;
+        if (lbl) {
+          var cst = getComputedStyle(t),
+            tl = parseFloat(cst.paddingLeft) * 15,
+            lw = parseFloat(getComputedStyle(lbl).width) * 15;
+          var teks = t.cloneNode(true);
+          teks.removeChild(teks.querySelector('.l'));
+          isi = para(
+            run(lbl.textContent, so) + '<w:r><w:tab/></w:r>' + runs(teks, so),
+            { left: Math.round(tl + lw), hanging: Math.round(lw), line: sl, exact: true, tabs: '<w:tab w:val="left" w:pos="' + Math.round(tl + lw) + '"/>' }
+          );
+        } else {
+          isi = para(runs(t, so), { left: Math.round(parseFloat(getComputedStyle(t).paddingLeft) * 15), line: sl, exact: true });
+        }
+        cells += tc(isi, { w: TW[5], b: bd, m: [17, 0, 17, 85] });
+        cells += tc(para(run(cb.textContent.trim(), so), { left: 170, line: sl, exact: true }), { w: TW[6], b: bd, m: [17, 0, 17, 0] });
+        rows += tr(cells);
+      });
+    });
+    body += tbl(rows, TW);
+    body += spacer(170);
+    // isi berita acara
+    var isi = q('.bap-isi'),
+      habisTabel = false;
+    [].forEach.call(isi.children, function (el) {
+      var tg = el.tagName;
+      if (tg === 'P') {
+        body += para(runs(el, o), { before: habisTabel ? 91 : 0, after: 91, line: line });
+        habisTabel = false;
+      } else if (tg === 'TABLE') {
+        body += tabelDom(el, [1247, W - 1247], { run: o, line: line });
+        habisTabel = true;
+      } else if (tg === 'OL') {
+        [].forEach.call(el.children, function (li, i) {
+          body += para(run(i + 1 + '.', o) + '<w:r><w:tab/></w:r>' + runs(li, o), {
+            left: 397,
+            hanging: 284,
+            line: line,
+            after: i === el.children.length - 1 ? 91 : 0,
+            tabs: '<w:tab w:val="left" w:pos="397"/>'
+          });
+        });
+        habisTabel = false;
+      }
+    });
+    // tanda tangan
+    var ttd = q('.bap-ttd'),
+      tw = [Math.round(W * 0.6), W - Math.round(W * 0.6)],
+      bo = { font: F, sz: pt, b: true };
+    body += spacer(Math.round(28 * MM));
+    var cells = '';
+    [].forEach.call(ttd.querySelectorAll('td'), function (td, i) {
+      var nm = td.querySelector('.nm'),
+        jb = td.querySelector('.jb');
+      cells += tc(
+        para(runs(nm, Object.assign({ u: true }, bo)), { jc: 'center', after: 57, line: line }) +
+          para(runs(jb, bo), { jc: 'center', line: line }),
+        { w: tw[i] }
+      );
+    });
+    body += tbl(tr(cells), tw);
+    // footer (catatan kaki + release date)
+    var foot = q('.bap-foot'),
+      fo = { font: F, sz: ptDari(foot) },
+      fl = Math.round(ptDari(foot) * 1.35 * 20);
+    var kiri = foot.children[0],
+      kanan = foot.children[1];
+    var kiriTeks = kiri.innerHTML.split(/<br\s*\/?>/i).map(function (h) {
+      var s = document.createElement('div');
+      s.innerHTML = h;
+      return s;
+    });
+    var fx =
+      para(runs(kiriTeks[0], fo) + '<w:r><w:tab/></w:r>' + runs(kanan, fo), {
+        left: Math.round(8 * MM),
+        line: fl,
+        tabs: '<w:tab w:val="right" w:pos="' + (W - 0) + '"/>'
+      }) + para(runs(kiriTeks[1], fo), { left: Math.round(8 * MM), line: fl });
+    return paket({
+      body: body,
+      imgs: imgs,
+      footer: fx,
+      font: F,
+      sz: 8.5,
+      pg: { top: pad('paddingTop'), right: pad('paddingRight'), bottom: Math.round(14 * MM), left: L, footer: Math.round(6 * MM) }
+    });
+  }
+
+  // ---------- QC ----------
+  function qc() {
+    var pages = document.querySelectorAll('#qc .kertas-qc'),
+      body = '',
+      imgs = [],
+      cx = Math.round(210 * EMU_MM),
+      cy = Math.round(297 * EMU_MM);
+    [].forEach.call(pages, function (pg, i) {
+      var host = document.createElement('div');
+      host.style.cssText = 'position:fixed;left:-10000px;top:0;width:210mm;height:297mm;background:#fff;';
+      var k = pg.cloneNode(true);
+      k.style.transform = 'none';
+      host.appendChild(k);
+      document.body.appendChild(host);
+      try {
+        var kr = k.getBoundingClientRect(),
+          im = k.querySelector('img'),
+          d = dataUri(im && im.getAttribute('src')),
+          rid = 'rIdQc' + (i + 1);
+        if (!d) throw new Error('gambar form halaman ' + (i + 1) + ' tidak terbaca');
+        imgs.push({ rid: rid, name: 'media/qc' + (i + 1) + '.jpg', data: d.data, mime: d.mime });
+        body += para(gambarLatar(rid, i + 1, cx, cy), { pbb: i > 0, line: 20, exact: true });
+        [].forEach.call(k.children, function (c) {
+          if (c.tagName === 'IMG') return;
+          var t = c.textContent.trim();
+          if (!t) return;
+          var r = c.getBoundingClientRect(),
+            cst = getComputedStyle(c),
+            tengah = cst.textAlign === 'center',
+            h = Math.max(Math.round(r.height * 15), 120);
+          var fo = { font: famili(cst.fontFamily), sz: parseFloat(cst.fontSize) * 0.75, b: parseInt(cst.fontWeight, 10) >= 600 };
+          var w = Math.round((r.width + (tengah ? 0 : 8)) * 15);
+          var frame =
+            '<w:framePr w:w="' +
+            w +
+            '" w:h="' +
+            h +
+            '" w:hRule="exact" w:wrap="around" w:vAnchor="page" w:hAnchor="page" w:x="' +
+            Math.round((r.left - kr.left) * 15) +
+            '" w:y="' +
+            Math.round((r.top - kr.top) * 15) +
+            '"/>';
+          body += para(run(t, fo), { frame: frame, jc: tengah ? 'center' : 'left', line: h, exact: true });
+        });
+        // paragraf penutup halaman: tempat "mengikat" kotak teks di atas
+        body += para('', { line: 20, exact: true });
+      } finally {
+        document.body.removeChild(host);
+      }
+    });
+    return paket({ body: body, imgs: imgs, font: 'Calibri', sz: 8, pg: { top: 0, right: 0, bottom: 0, left: 0 } });
+  }
+
+  return { sppw: sppw, baps: baps, qc: qc };
+})();
+
+function unduhBlob(blob, nama) {
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = nama;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function () {
+    URL.revokeObjectURL(a.href);
+    if (a.parentNode) a.parentNode.removeChild(a);
+  }, 1500);
+}
+function simpanWord(bagian, tombol) {
   var val = function (id) {
     var e = document.getElementById(id);
     return e ? e.value : '';
@@ -3170,48 +3983,26 @@ function simpanPdf(bagian, tombol) {
       : bagian === 'baps'
         ? namaFilePdf('BAPS', val('bapsNoSo'))
         : namaFilePdf('QC', val('qcNoPr'));
-  var halaman = document.querySelectorAll('#' + bagian + ' .kertas');
   var teksAsli = tombol.innerHTML;
   tombol.setAttribute('data-sibuk', '1');
   tombol.disabled = true;
   tombol.innerHTML = '&#8987; Menyimpan...';
-  var pdf = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
-  var i = 0;
   function selesai() {
     tombol.removeAttribute('data-sibuk');
     tombol.innerHTML = teksAsli;
     perbaruiTombolKosong();
   }
-  function berikut() {
-    if (i >= halaman.length) {
-      pdf.save(nama + '.pdf');
+  setTimeout(function () {
+    try {
+      var blob = DOCX[bagian]();
+      unduhBlob(blob, nama + '.docx');
       catatHistory(bagian, 'Save');
-      selesai();
-      return;
+      driveKirimDocx(nama + '.docx', blob);
+    } catch (err) {
+      infoPesan('Gagal menyimpan Word: ' + err);
     }
-    var host = document.createElement('div');
-    host.style.cssText = 'position:fixed;left:-10000px;top:0;width:210mm;height:297mm;background:#fff;';
-    var k = halaman[i].cloneNode(true);
-    k.style.transform = 'none';
-    k.style.boxShadow = 'none';
-    host.appendChild(k);
-    document.body.appendChild(host);
-    window
-      .html2canvas(k, { scale: 2, backgroundColor: '#ffffff', logging: false })
-      .then(function (c) {
-        document.body.removeChild(host);
-        if (i > 0) pdf.addPage();
-        pdf.addImage(c.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
-        i++;
-        berikut();
-      })
-      .catch(function (err) {
-        if (host.parentNode) host.parentNode.removeChild(host);
-        infoPesan('Gagal menyimpan PDF: ' + err);
-        selesai();
-      });
-  }
-  berikut();
+    selesai();
+  }, 30);
 }
 
 // ----- HISTORY -----
@@ -3302,16 +4093,20 @@ function catatHistory(b, aksi) {
     aksi: aksi,
     data: ambilSnapshot(b)
   };
-  var daftar = muatHistory();
+  var daftar = muatHistory(),
+    ganti = [];
   if (info.nomor) {
     // dokumen dengan nomor yang sama diperbarui, bukan dobel
     daftar = daftar.filter(function (r) {
-      return !(r.jenis === jenis && String(r.nomor || '').toLowerCase() === info.nomor.toLowerCase());
+      var sama = r.jenis === jenis && String(r.nomor || '').toLowerCase() === info.nomor.toLowerCase();
+      if (sama) ganti.push(r.id);
+      return !sama;
     });
   }
   daftar.push(e);
   simpanHistory(rapikanHistory(daftar));
   renderHistory();
+  driveKirim({ aksi: 'simpan', entry: e, ganti: ganti });
 }
 function bagianTerisi(b) {
   perbaruiTombolKosong();
@@ -3475,6 +4270,7 @@ function initHistory() {
       hp = e.target.getAttribute('data-hapus');
     if (bk) pulihkanHistory(bk);
     if (hp) {
+      driveKirim({ aksi: 'hapus', id: hp });
       simpanHistory(
         muatHistory().filter(function (r) {
           return r.id !== hp;
@@ -3487,9 +4283,131 @@ function initHistory() {
     tanyaYa('Hapus semua history? Dokumen yang sudah di-Save tidak ikut terhapus.', function () {
       simpanHistory([]);
       renderHistory();
+      driveKirim({ aksi: 'hapusSemua' });
     });
   });
   renderHistory();
+  initDrive();
+}
+
+// ----- GOOGLE DRIVE (riwayat & file Word dibagi lewat Apps Script) -----
+var DRIVE_FOLDER_DEFAULT = 'https://drive.google.com/drive/folders/1NYfc53sovfRIMWzGaZq7xeqbIPhMR00i?usp=sharing';
+var DRIVE_SCRIPT_DEFAULT = ''; // isi URL /exec di sini kalau mau langsung terpasang di semua perangkat
+function lsAman(k, v) {
+  try {
+    if (v === undefined) return localStorage.getItem(k);
+    localStorage.setItem(k, v);
+  } catch (e) {}
+  return null;
+}
+function driveCfg() {
+  return {
+    folder: lsAman('drive_folder') || DRIVE_FOLDER_DEFAULT,
+    script: (lsAman('drive_script') || DRIVE_SCRIPT_DEFAULT || '').trim()
+  };
+}
+function driveStatus(t, jenis) {
+  var e = document.getElementById('driveStatus');
+  if (!e) return;
+  e.textContent = t || '';
+  e.className = 'status-drive' + (jenis ? ' ' + jenis : '');
+}
+function driveKirim(payload) {
+  var c = driveCfg();
+  if (!c.script) return Promise.resolve(false);
+  return fetch(c.script, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  })
+    .then(function () {
+      return true;
+    })
+    .catch(function () {
+      driveStatus('Gagal mengirim ke Google Drive. Cek koneksi atau URL Apps Script.', 'err');
+      return false;
+    });
+}
+function driveKirimDocx(nama, blob) {
+  if (!driveCfg().script) return;
+  var fr = new FileReader();
+  fr.onload = function () {
+    var b64 = String(fr.result).split(',')[1] || '';
+    driveKirim({ aksi: 'docx', nama: nama, base64: b64 }).then(function (ok) {
+      if (ok) driveStatus('File ' + nama + ' dikirim ke folder Google Drive.', 'ok');
+    });
+  };
+  fr.readAsDataURL(blob);
+}
+// gabungkan riwayat dari Drive ke riwayat lokal (id sama = satu; nomor sama = ambil yang terbaru)
+function driveMuat(manual) {
+  var c = driveCfg();
+  if (!c.script) {
+    if (manual) driveStatus('URL Apps Script belum diisi.', 'err');
+    return Promise.resolve();
+  }
+  if (manual) driveStatus('Mengambil riwayat dari Google Drive...');
+  return fetch(c.script + (c.script.indexOf('?') < 0 ? '?' : '&') + 'aksi=list&_=' + Date.now())
+    .then(function (r) {
+      return r.json();
+    })
+    .then(function (j) {
+      if (!j || !j.ok || !Array.isArray(j.data)) throw new Error('respon tidak valid');
+      var peta = {};
+      muatHistory()
+        .concat(
+          j.data.filter(function (r) {
+            return r && r.id && r.waktu && HIST_LABEL[String(r.jenis || '').toLowerCase()];
+          })
+        )
+        .forEach(function (r) {
+          peta[r.id] = r;
+        });
+      var byNomor = {},
+        hasil = [];
+      rapikanHistory(
+        Object.keys(peta).map(function (k) {
+          return peta[k];
+        })
+      ).forEach(function (r) {
+        var key = r.nomor ? r.jenis + '|' + String(r.nomor).toLowerCase() : '';
+        if (key) {
+          if (byNomor[key]) return;
+          byNomor[key] = 1;
+        }
+        hasil.push(r);
+      });
+      simpanHistory(hasil);
+      renderHistory();
+      driveStatus('Riwayat tersinkron dengan Google Drive (' + hasil.length + ' dokumen).', 'ok');
+    })
+    .catch(function () {
+      driveStatus('Gagal mengambil riwayat dari Google Drive. Cek URL Apps Script dan izin aksesnya.', 'err');
+    });
+}
+function initDrive() {
+  var c = driveCfg(),
+    f = document.getElementById('driveFolder'),
+    sc = document.getElementById('driveScript');
+  f.value = c.folder;
+  sc.value = c.script;
+  document.getElementById('driveSimpan').addEventListener('click', function () {
+    lsAman('drive_folder', f.value.trim() || DRIVE_FOLDER_DEFAULT);
+    lsAman('drive_script', sc.value.trim());
+    driveStatus('Pengaturan disimpan.', 'ok');
+    driveMuat(false);
+  });
+  document.getElementById('driveBuka').addEventListener('click', function () {
+    window.open(f.value.trim() || DRIVE_FOLDER_DEFAULT, '_blank', 'noopener');
+  });
+  document.getElementById('driveSinkron').addEventListener('click', function () {
+    driveMuat(true);
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) driveMuat(false);
+  });
+  driveMuat(false);
 }
 
 // ----- SPREADSHEET (Google Sheets "PENDING DOK MITRA AKTIVASI", dicari lewat kolom NO PA) -----
@@ -3647,9 +4565,29 @@ function terapkanSheet(b, r) {
   if (b === 'sppw') {
     el('linkDari').value = r.customer;
     el('linkKe').value = r.node;
+    var ket = 'Customer & Node',
+      jns = 'ok',
+      tmb = '';
+    if (r.mitra) {
+      var im = -1;
+      mitraDb.forEach(function (m, i) {
+        if (im < 0 && normNama(m.nama) === normNama(r.mitra)) im = i;
+      });
+      if (im >= 0) {
+        el('pilihMitra').value = String(im);
+        ket += ', Mitra (' + mitraDb[im].nama + ')';
+      } else {
+        el('pilihMitra').value = '';
+        jns = 'warn';
+        tmb =
+          ' Mitra "' + r.mitra + '" belum ada di Data Mitra, silakan tambahkan (nama sudah disiapkan di form Tambah Data Mitra).';
+        el('mitraBaruNama').value = r.mitra;
+        el('panelMitra').classList.add('buka');
+      }
+    }
     simpanIsianForm();
     perbaruiPreview();
-    return { teks: '\u2713 Terisi dari spreadsheet: Customer & Node.', jenis: 'ok' };
+    return { teks: '\u2713 Terisi dari spreadsheet: ' + ket + '.' + tmb, jenis: jns };
   }
   el('bapsTgl1').value = r.delivery;
   el('bapsTgl2').value = r.testcom;
