@@ -1624,6 +1624,7 @@ body.terkunci > *:not(#loginGate):not(script):not(.qc-ukur) { display: none !imp
       <input type="hidden" id="bapsPerjanjian">
       <input type="hidden" id="bapsAmd1">
       <input type="hidden" id="bapsAmd2">
+      <input type="hidden" id="bapsAmd3">
       <input type="hidden" id="bapsPejNama">
       <input type="hidden" id="bapsPejJabatan">
       <input type="hidden" id="bapsPejAlamat">
@@ -1681,6 +1682,7 @@ body.terkunci > *:not(#loginGate):not(script):not(.qc-ukur) { display: none !imp
           <div class="field"><label>No. Perjanjian</label><input type="text" id="bapsMitraPerjanjian"></div>
           <div class="field"><label>No. Amandemen I</label><input type="text" id="bapsMitraAmd1"></div>
           <div class="field"><label>No. Amandemen II</label><input type="text" id="bapsMitraAmd2"></div>
+          <div class="field"><label>No. Amandemen III</label><input type="text" id="bapsMitraAmd3"></div>
         </div>
         <div class="baris-mitra" style="margin-top:8px">
           <div class="field"><label>Nama Penandatangan Mitra</label><input type="text" id="bapsMitraPejNama"></div>
@@ -1719,6 +1721,7 @@ body.terkunci > *:not(#loginGate):not(script):not(.qc-ukur) { display: none !imp
           <tr><td>No. Perjanjian</td><td>:</td><td colspan="2"><span id="pbPerjanjian" class="kosong">__________</span></td></tr>
           <tr id="pbRowAmd1"><td>No. Amandemen I</td><td>:</td><td colspan="2"><span id="pbAmd1" class="kosong">__________</span></td></tr>
           <tr id="pbRowAmd2"><td>No. Amandemen II</td><td>:</td><td colspan="2"><span id="pbAmd2" class="kosong">__________</span></td></tr>
+          <tr id="pbRowAmd3"><td>No. Amandemen III</td><td>:</td><td colspan="2"><span id="pbAmd3" class="kosong">__________</span></td></tr>
           <tr><td>Pelaksana Pekerjaan</td><td>:</td><td colspan="2"><b class="pb-pelaksana kosong">__________</b></td></tr>
         </table>
         <table class="bap-tbl">
@@ -1799,11 +1802,9 @@ body.terkunci > *:not(#loginGate):not(script):not(.qc-ukur) { display: none !imp
 <div class="hist-wrap">
   <div class="seksi integ">
     <h3>Link Google Drive</h3>
-    <p class="desc">Dua link untuk menyimpan riwayat dan file Word ke Google Drive, supaya bisa dibuka dari perangkat lain.</p>
+    <p class="desc">Riwayat dan file Word otomatis disimpan ke folder Google Drive ini, supaya bisa dibuka dari perangkat lain.</p>
     <label for="driveFolder">Link Folder Google Drive</label>
     <input type="text" id="driveFolder" autocomplete="off">
-    <label for="driveScript">URL Apps Script (Web App)</label>
-    <input type="text" id="driveScript" autocomplete="off" placeholder="https://script.google.com/macros/s/.../exec">
     <div class="baris-tombol">
       <button type="button" class="btn-biru" id="driveSimpan">Simpan</button>
       <button type="button" class="btn-biru abu" id="driveBuka">Buka Drive</button>
@@ -1821,7 +1822,7 @@ body.terkunci > *:not(#loginGate):not(script):not(.qc-ukur) { display: none !imp
       <h3>Riwayat Dokumen</h3>
       <button class="btn-baps" id="histHapusSemua" type="button">&#128465;&#65039; Hapus semua</button>
     </div>
-    <p class="qc-hint">History disimpan di browser ini dan, kalau URL Apps Script sudah diisi, juga di folder Google Drive di atas supaya bisa dibuka dari perangkat lain.</p>
+    <p class="qc-hint">History disimpan di browser ini dan, juga di folder Google Drive di atas supaya bisa dibuka dari perangkat lain.</p>
     <div class="hist-chips" id="histChips"></div>
     <div id="histList"></div>
   </div>
@@ -2521,6 +2522,7 @@ function muatBapsMitra() {
       perjanjian: m.perjanjian || '',
       amd1: m.amd1 || '',
       amd2: m.amd2 || '',
+      amd3: m.amd3 || '',
       pejNama: m.pejNama || '',
       pejJabatan: m.pejJabatan || '',
       pejAlamat: m.pejAlamat || ''
@@ -2554,6 +2556,7 @@ function renderBapsMitra() {
         if (m.perjanjian) info.push('Perjanjian: ' + escB(m.perjanjian));
         if (m.amd1) info.push('Amd I: ' + escB(m.amd1));
         if (m.amd2) info.push('Amd II: ' + escB(m.amd2));
+        if (m.amd3) info.push('Amd III: ' + escB(m.amd3));
         if (m.pejNama) info.push('TTD: ' + escB(m.pejNama) + (m.pejJabatan ? ' (' + escB(m.pejJabatan) + ')' : ''));
         return (
           '<div class="item"><div><div class="nama">' +
@@ -2579,6 +2582,7 @@ function resetFormMitraBaps() {
     'bapsMitraPerjanjian',
     'bapsMitraAmd1',
     'bapsMitraAmd2',
+    'bapsMitraAmd3',
     'bapsMitraPejNama',
     'bapsMitraPejJabatan',
     'bapsMitraPejAlamat'
@@ -2594,6 +2598,7 @@ function tambahMitraBaps() {
     perjanjian: document.getElementById('bapsMitraPerjanjian').value.trim(),
     amd1: document.getElementById('bapsMitraAmd1').value.trim(),
     amd2: document.getElementById('bapsMitraAmd2').value.trim(),
+    amd3: document.getElementById('bapsMitraAmd3').value.trim(),
     pejNama: document.getElementById('bapsMitraPejNama').value.trim(),
     pejJabatan: document.getElementById('bapsMitraPejJabatan').value.trim(),
     pejAlamat: document.getElementById('bapsMitraPejAlamat').value.trim()
@@ -2630,6 +2635,7 @@ function editMitraBaps(i) {
   document.getElementById('bapsMitraPerjanjian').value = m.perjanjian;
   document.getElementById('bapsMitraAmd1').value = m.amd1;
   document.getElementById('bapsMitraAmd2').value = m.amd2;
+  document.getElementById('bapsMitraAmd3').value = m.amd3;
   document.getElementById('bapsMitraPejNama').value = m.pejNama;
   document.getElementById('bapsMitraPejJabatan').value = m.pejJabatan;
   document.getElementById('bapsMitraPejAlamat').value = m.pejAlamat;
@@ -2653,7 +2659,7 @@ function hapusMitraBapsLangsung(i) {
 function toggleKelolaMitraBaps() {
   document.getElementById('bapsPanelMitra').classList.toggle('buka');
 }
-// pilih Pelaksana Pekerjaan -> No. Perjanjian, Amd I, Amd II langsung terisi (tanpa ditampilkan di form)
+// pilih Pelaksana Pekerjaan -> No. Perjanjian, Amd I, II, III langsung terisi (tanpa ditampilkan di form)
 function isiDariPelaksana() {
   var nama = document.getElementById('bapsPelaksana').value;
   var m = bapsMitraDb.filter(function (x) {
@@ -2662,6 +2668,7 @@ function isiDariPelaksana() {
   document.getElementById('bapsPerjanjian').value = m ? m.perjanjian : '';
   document.getElementById('bapsAmd1').value = m ? m.amd1 : '';
   document.getElementById('bapsAmd2').value = m ? m.amd2 : '';
+  document.getElementById('bapsAmd3').value = m ? m.amd3 : '';
   document.getElementById('bapsPejNama').value = m ? m.pejNama : '';
   document.getElementById('bapsPejJabatan').value = m ? m.pejJabatan : '';
   document.getElementById('bapsPejAlamat').value = m ? m.pejAlamat : '';
@@ -2687,6 +2694,7 @@ var BAPS_DEF = {
   bapsPerjanjian: '',
   bapsAmd1: '',
   bapsAmd2: '',
+  bapsAmd3: '',
   bapsPelaksana: '',
   bapsTgl1: '',
   bapsTgl2: '',
@@ -2806,10 +2814,12 @@ function perbaruiBaps() {
   isiBaps('#pbPerjanjian', nilaiBaps('bapsPerjanjian'));
   isiBaps('#pbAmd1', nilaiBaps('bapsAmd1'));
   isiBaps('#pbAmd2', nilaiBaps('bapsAmd2'));
+  isiBaps('#pbAmd3', nilaiBaps('bapsAmd3'));
   // kalau mitra sudah dipilih, amandemen yang kosong tidak ditampilkan
   var adaPel = nilaiBaps('bapsPelaksana') !== '';
   document.getElementById('pbRowAmd1').hidden = adaPel && !nilaiBaps('bapsAmd1');
   document.getElementById('pbRowAmd2').hidden = adaPel && !nilaiBaps('bapsAmd2');
+  document.getElementById('pbRowAmd3').hidden = adaPel && !nilaiBaps('bapsAmd3');
   isiBaps('.pb-pelaksana', nilaiBaps('bapsPelaksana'));
   document.getElementById('pbTglPerp').textContent = fmtTglBapsAman(document.getElementById('bapsTglPerp').value) || '-';
   // tanggal BAPS (hari ini / tanggal dibuat)
@@ -4747,7 +4757,7 @@ function initHistory() {
 
 // ----- GOOGLE DRIVE (riwayat & file Word dibagi lewat Apps Script) -----
 var DRIVE_FOLDER_DEFAULT = 'https://drive.google.com/drive/folders/1NYfc53sovfRIMWzGaZq7xeqbIPhMR00i?usp=sharing';
-var DRIVE_SCRIPT_DEFAULT = ''; // isi URL /exec di sini kalau mau langsung terpasang di semua perangkat
+var DRIVE_SCRIPT_DEFAULT = 'https://script.google.com/macros/s/AKfycbwtBjs9eRWyFs8EAyyEatf-wtwcA5PCYKQqJZr1o5WFeED9D0MFqxCFo1KUjdKQDKbc/exec'; // URL Apps Script (Web App), sudah tertanam di semua perangkat
 function lsAman(k, v) {
   try {
     if (v === undefined) return localStorage.getItem(k);
@@ -4758,7 +4768,7 @@ function lsAman(k, v) {
 function driveCfg() {
   return {
     folder: lsAman('drive_folder') || DRIVE_FOLDER_DEFAULT,
-    script: (lsAman('drive_script') || DRIVE_SCRIPT_DEFAULT || '').trim()
+    script: DRIVE_SCRIPT_DEFAULT.trim()
   };
 }
 function driveStatus(t, jenis) {
@@ -4780,7 +4790,7 @@ function driveKirim(payload) {
       return true;
     })
     .catch(function () {
-      driveStatus('Gagal mengirim ke Google Drive. Cek koneksi atau URL Apps Script.', 'err');
+      driveStatus('Gagal mengirim ke Google Drive. Cek koneksi internet.', 'err');
       return false;
     });
 }
@@ -4799,7 +4809,7 @@ function driveKirimDocx(nama, blob) {
 function driveMuat(manual) {
   var c = driveCfg();
   if (!c.script) {
-    if (manual) driveStatus('URL Apps Script belum diisi.', 'err');
+    if (manual) driveStatus('Sinkron Drive belum aktif.', 'err');
     return Promise.resolve();
   }
   if (manual) driveStatus('Mengambil riwayat dari Google Drive...');
@@ -4838,18 +4848,15 @@ function driveMuat(manual) {
       driveStatus('Riwayat tersinkron dengan Google Drive (' + hasil.length + ' dokumen).', 'ok');
     })
     .catch(function () {
-      driveStatus('Gagal mengambil riwayat dari Google Drive. Cek URL Apps Script dan izin aksesnya.', 'err');
+      driveStatus('Gagal mengambil riwayat dari Google Drive. Cek koneksi internet dan izin akses Apps Script.', 'err');
     });
 }
 function initDrive() {
   var c = driveCfg(),
-    f = document.getElementById('driveFolder'),
-    sc = document.getElementById('driveScript');
+    f = document.getElementById('driveFolder');
   f.value = c.folder;
-  sc.value = c.script;
   document.getElementById('driveSimpan').addEventListener('click', function () {
     lsAman('drive_folder', f.value.trim() || DRIVE_FOLDER_DEFAULT);
-    lsAman('drive_script', sc.value.trim());
     driveStatus('Pengaturan disimpan.', 'ok');
     driveMuat(false);
   });
